@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 public class Server {
     public static final String KNOCK_MESSAGE = "KNOCK KNOCK";
+    public static final Integer MIN_ACCEPTABLE_PORT = 1025;
 
     public static void main(String[] args) throws IOException, InterruptedException {
         // check if any args were passed
@@ -25,8 +26,14 @@ public class Server {
             sequence[i] = Integer.parseInt(args[i]);
 
         // set ports
-        for (String arg : args)
+        for (String arg : args) {
+            // check if provided port number is correct
+            int portNumber = Integer.parseInt(arg);
+            if(portNumber < MIN_ACCEPTABLE_PORT)
+                throw new IllegalArgumentException("Specified port list contains port number below minimal acceptable value");
+            // add port number to ports list
             ports.add(Integer.parseInt(arg));
+        }
 
 
         // START EACH SOCKET IN NEW THREAD
