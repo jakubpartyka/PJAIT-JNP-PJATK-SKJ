@@ -12,7 +12,7 @@ public class Server {
         HashSet<Integer> ports = new HashSet<>();
 
         // connection objects
-        ArrayList<DatagramSocket> sockets = new ArrayList<>();
+        ArrayList<ServerSocketThread> sockets = new ArrayList<>();
 
         // set sequence
         for (int i = 0; i < args.length; i++)
@@ -23,11 +23,13 @@ public class Server {
             ports.add(Integer.parseInt(arg));
 
 
-        // OPEN DATAGRAM PORTS
+        // START EACH SOCKET IN NEW THREAD
         for (Integer port : ports) {
-            DatagramSocket socket = new DatagramSocket(port);
-            sockets.add(socket);
+            ServerSocketThread socketThread = new ServerSocketThread(port);
+            sockets.add(socketThread);
+            socketThread.start();
         }
+
 
 
 
