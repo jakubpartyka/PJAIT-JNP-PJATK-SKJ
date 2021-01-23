@@ -1,7 +1,4 @@
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -33,6 +30,7 @@ public class Server {
 
         // START EACH SOCKET IN NEW THREAD
         for (Integer port : ports) {
+            System.out.println("Starting socket on port " + port);
             ServerSocketThread socketThread = new ServerSocketThread(port);
             sockets.add(socketThread);
             socketThread.start();
