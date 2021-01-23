@@ -29,34 +29,5 @@ public class Server {
             sockets.add(socketThread);
             socketThread.start();
         }
-
-
-
-
-//        boolean running;
-//        byte[] buf = new byte[256];
-//
-//        running = true;
-//
-//        while (running) {
-//            DatagramPacket packet
-//                    = new DatagramPacket(buf, buf.length);
-//            socket.receive(packet);
-//
-//            InetAddress address = packet.getAddress();
-//            int port = packet.getPort();
-//            packet = new DatagramPacket(buf, buf.length, address, port);
-//            String received = new String(packet.getData(), 0, packet.getLength());
-//
-//            System.out.println("received: " + received);
-//
-//            if (received.equals("end")) {
-//                running = false;
-//                continue;
-//            }
-//            socket.send(packet);
-//        }
-//        socket.close();
-
     }
 }
