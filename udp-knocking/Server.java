@@ -4,22 +4,22 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 public class Server {
+    // SERVER CONFIGURATION
     public static final String KNOCK_MESSAGE = "KNOCK KNOCK";
     public static final Integer MIN_ACCEPTABLE_PORT = 1025;
 
     public static void main(String[] args) throws IOException, InterruptedException {
+        // =========== CONNECTION OBJECTS
+        int [] sequence = new int[args.length];
+        HashSet<Integer> ports = new HashSet<>();
+        ArrayList<ServerSocketThread> sockets = new ArrayList<>();
+        // ===========
+
         // check if any args were passed
         if(args.length == 0){
             System.out.println("Please provide UPD knocking sequence as program arguments");
             System.exit(1);
         }
-
-        // config
-        int [] sequence = new int[args.length];
-        HashSet<Integer> ports = new HashSet<>();
-
-        // connection objects
-        ArrayList<ServerSocketThread> sockets = new ArrayList<>();
 
         // set sequence
         for (int i = 0; i < args.length; i++)
