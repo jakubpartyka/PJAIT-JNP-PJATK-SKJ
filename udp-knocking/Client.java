@@ -10,14 +10,14 @@ public class Client {
         socket = new DatagramSocket();
         address = InetAddress.getByName("localhost");
 
-        String response = sendEcho("echo");
+        String response = sendEcho("KNOCK KNOCK");
         System.out.println(response);
     }
 
     public static String sendEcho(String msg) throws IOException {
         buf = msg.getBytes();
         DatagramPacket packet
-                = new DatagramPacket(buf, buf.length, address, 4445);
+                = new DatagramPacket(buf, buf.length, address, 20202);
         socket.send(packet);
         packet = new DatagramPacket(buf, buf.length);
         socket.receive(packet);

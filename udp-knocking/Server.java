@@ -1,11 +1,12 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class Server {
     public static final String KNOCK_MESSAGE = "KNOCK KNOCK";
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         // check if any args were passed
         if(args.length == 0){
             System.out.println("Please provide UPD knocking sequence as program arguments");
@@ -32,8 +33,14 @@ public class Server {
         for (Integer port : ports) {
             System.out.println("Starting socket on port " + port);
             ServerSocketThread socketThread = new ServerSocketThread(port);
-            sockets.add(socketThread);
             socketThread.start();
+            sockets.add(socketThread);
         }
+
+        Thread.sleep(1000);
+        //todo check if threads started correctly
+
+        System.out.println("All sockets stared. Correct UPD knock sequence:\n" +
+                Arrays.toString(sequence));
     }
 }

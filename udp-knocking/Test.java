@@ -6,7 +6,6 @@ import java.net.InetAddress;
 public class Test {
     public static void main(String[] args) {
         for (int i = 0; i < 10 ; i++) {
-            int finalI = i;
             new Thread(() -> {
                 try {
                     DatagramSocket socket;
@@ -16,12 +15,12 @@ public class Test {
                     socket = new DatagramSocket();
                     address = InetAddress.getByName("localhost");
 
-                    String msg = "test " + finalI;
+                    String msg = "KNOCK KNOCK";
 
                     //noinspection DuplicatedCode
                     buf = msg.getBytes();
                     DatagramPacket packet
-                            = new DatagramPacket(buf, buf.length, address, 4445);
+                            = new DatagramPacket(buf, buf.length, address, 20202);
                     socket.send(packet);
                     packet = new DatagramPacket(buf, buf.length);
                     socket.receive(packet);
