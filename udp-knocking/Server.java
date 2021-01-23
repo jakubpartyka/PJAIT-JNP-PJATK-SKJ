@@ -6,7 +6,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Server {
+    public static final String KNOCK_MESSAGE = "KNOCK KNOCK";
+
     public static void main(String[] args) throws IOException {
+        // check if any args were passed
+        if(args.length == 0){
+            System.out.println("Please provide UPD knocking sequence as program arguments");
+            System.exit(1);
+        }
+
         // config
         int [] sequence = new int[args.length];
         HashSet<Integer> ports = new HashSet<>();
