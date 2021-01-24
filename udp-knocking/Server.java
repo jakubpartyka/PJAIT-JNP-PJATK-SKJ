@@ -10,7 +10,7 @@ public class Server {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         // =========== CONNECTION OBJECTS
-        int [] sequence = new int[args.length];
+        SequenceSupervisor.sequence = new int[args.length];
         HashSet<Integer> ports = new HashSet<>();
         ArrayList<ServerSocketThread> sockets = new ArrayList<>();
         // ===========
@@ -23,7 +23,7 @@ public class Server {
 
         // set sequence
         for (int i = 0; i < args.length; i++)
-            sequence[i] = Integer.parseInt(args[i]);
+            SequenceSupervisor.sequence[i] = Integer.parseInt(args[i]);
 
         // set ports
         for (String arg : args) {
@@ -48,6 +48,6 @@ public class Server {
         //todo check if threads started correctly
 
         System.out.println("All sockets stared. Correct UPD knock sequence:\n" +
-                Arrays.toString(sequence));
+                Arrays.toString(SequenceSupervisor.sequence));
     }
 }

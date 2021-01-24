@@ -2,12 +2,29 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SequenceSupervisor {
-    HashMap<String, ArrayList<Integer>> sequences = new HashMap<>();
+    // SEQUENCE
+    public static int [] sequence;
 
+    // key: client address (ip:port) ; value: sequence list
+    private static HashMap<String, ArrayList<Integer>> clientSequences = new HashMap<>();
 
-    void addSequence(String clientAddress, int port){
-        if(!sequences.containsKey(clientAddress))
-            sequences.put(clientAddress, new ArrayList<>());
-        sequences.get(clientAddress).add(port);
+    // use this method when client knocked on port
+    public static void addSequence(String clientAddress, int port){
+        if(!clientSequences.containsKey(clientAddress))
+            clientSequences.put(clientAddress, new ArrayList<>());
+        clientSequences.get(clientAddress).add(port);
+    }
+
+    public static boolean verifySequence(String clientAddress){
+        ArrayList<Integer> clientKnockOrder = clientSequences.get(clientAddress);
+
+        if(clientKnockOrder.size() != sequence.length)
+            return false;
+
+        for (int i = 0; i < clientKnockOrder.size(); i++) {
+            if (clientKnockOrder.get(i) != sequence[i])
+                return false;
+        }
+        return true;
     }
 }
