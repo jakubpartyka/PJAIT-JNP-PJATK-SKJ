@@ -19,19 +19,18 @@ public class ServerSocketThread extends Thread{
     public void run() {
         try {
             while (running){
-                byte[] buf = new byte[256];
-                DatagramPacket packet = new DatagramPacket(buf, buf.length);
-                datagramSocket.receive(packet);
+                byte[] buffer = new byte[256];     // create buffer for received message\
+                DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+
+                datagramSocket.receive(packet);    // receive incoming data
 
                 InetAddress address = packet.getAddress();
-                packet = new DatagramPacket(buf, buf.length, address, port);
+                packet = new DatagramPacket(buffer, buffer.length, address, port);
 
                 String received = new String(packet.getData(), 0, Server.KNOCK_MESSAGE.length());
-                if(received.equals(Server.KNOCK_MESSAGE)){
+                if(received.equals(Server.KNOCK_MESSAGE)) {
                     log("correct knock-knock message received from: " + address.getHostAddress() + ':' + packet.getSocketAddress());
                 }
-
-
             }
         } catch (IOException e) {
             e.printStackTrace();

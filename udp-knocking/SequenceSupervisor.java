@@ -6,7 +6,7 @@ public class SequenceSupervisor {
     public static int [] sequence;
 
     // key: client address (ip:port) ; value: sequence list
-    private static HashMap<String, ArrayList<Integer>> clientSequences = new HashMap<>();
+    private static final HashMap<String, ArrayList<Integer>> clientSequences = new HashMap<>();
 
     // use this method when client knocked on port
     public static void addSequence(String clientAddress, int port){

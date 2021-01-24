@@ -37,14 +37,15 @@ public class Server {
 
 
         // START EACH SOCKET IN NEW THREAD
-        for (Integer port : ports) {
-            System.out.println("Starting socket on port " + port);
-            ServerSocketThread socketThread = new ServerSocketThread(port);
+        for (Integer portNumber : ports) {
+            System.out.println("Starting socket on port " + portNumber);
+            ServerSocketThread socketThread = new ServerSocketThread(portNumber);
             socketThread.start();
             sockets.add(socketThread);
         }
 
         Thread.sleep(1000);
+
         //todo check if threads started correctly
 
         System.out.println("All sockets stared. Correct UPD knock sequence:\n" +
