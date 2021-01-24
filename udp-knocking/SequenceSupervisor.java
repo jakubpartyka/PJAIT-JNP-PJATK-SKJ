@@ -27,4 +27,8 @@ public class SequenceSupervisor {
         }
         return true;
     }
+
+    public static ArrayList<Integer> getClientSequence(String clientAddress){
+        return clientSequences.get(clientAddress);
+    }
 }
