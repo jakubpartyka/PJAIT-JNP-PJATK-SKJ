@@ -27,9 +27,24 @@ public class ServerSocketThread extends Thread{
                 InetAddress address = packet.getAddress();
                 packet = new DatagramPacket(buffer, buffer.length, address, port);
 
+                // get sender's data
+                String clientAddress =  address.getHostAddress();
+                int knockPort = packet.getPort();
+
+                // obtain received message
                 String received = new String(packet.getData(), 0, Server.KNOCK_MESSAGE.length());
-                if(received.equals(Server.KNOCK_MESSAGE)) {
-                    log("correct knock-knock message received from: " + address.getHostAddress() + ':' + packet.getSocketAddress());
+
+
+                if(received.equals(Server.KNOCK_MESSAGE)) {     // if message content is equal to preset knock message
+                    log("knock-knock message received from: " + clientAddress + " on port " + knockPort + ". Adding to knock sequence.");
+                    SequenceSupervisor.addSequence(clientAddress,knockPort);
+
+                    if(SequenceSupervisor.verifySequence(clientAddress)){
+                        log("client " + address + " just sent a correct sequence!");
+                    }
+                    else {
+                        log("client " + address + " sequence so far: " + SequenceSupervisor.getClientSequence(clientAddress));
+                    }
                 }
             }
         } catch (IOException e) {
