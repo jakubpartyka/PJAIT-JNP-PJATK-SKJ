@@ -8,7 +8,6 @@ public class Client {
     // CONNECTION OBJECTS
     private static DatagramSocket socket;
     private static InetAddress address;
-    private static byte[] buf;
 
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -26,15 +25,22 @@ public class Client {
     }
 
     public static void knockOnPort(int port) throws IOException {
-        buf = KNOCK_MESSAGE.getBytes();
+        byte[] buffer = KNOCK_MESSAGE.getBytes();
 
         // create and send packet
-        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
         socket.send(packet);
 
-//        packet = new DatagramPacket(buf, buf.length);
-//        socket.receive(packet);
-//        String received = new String(
-//                packet.getData(), 0, packet.getLength());
+
+    }
+
+    public static int waitForPortNumber() throws IOException, NumberFormatException {
+        byte[] buffer = new byte[256];
+
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+        socket.receive(packet);
+        String received = new String(packet.getData(), 0, packet.getLength());
+
+        return Integer.parseInt(received);
     }
 }

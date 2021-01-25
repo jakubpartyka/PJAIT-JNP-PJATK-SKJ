@@ -1,12 +1,11 @@
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
+import java.net.*;
+import java.util.Random;
 
 public class ServerSocketThread extends Thread{
     private final int port;
     DatagramSocket datagramSocket;
+    ServerSocket tcpSocket;
     boolean running;
 
     public ServerSocketThread(int port) throws SocketException {
@@ -41,6 +40,7 @@ public class ServerSocketThread extends Thread{
 
                     if(SequenceSupervisor.verifySequence(clientAddress)){
                         log("client " + address + " just sent a correct sequence!");
+                        sendPortNumber();
                     }
                     else {
                         log("client " + address + " sequence so far: " + SequenceSupervisor.getClientSequence(clientAddress));
@@ -49,6 +49,23 @@ public class ServerSocketThread extends Thread{
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sends TCP port number to a client who authorized successfully.
+     */
+    private void sendPortNumber() {
+        tcpSocket = createServerSocket();
+    }
+
+    private ServerSocket createServerSocket() {
+        Random rand = new Random();
+        int portNumber = rand.nextInt(10000)+50000;     // pick random port
+        try {
+            return new ServerSocket(portNumber);
+        } catch (IOException e){
+            return createServerSocket();
         }
     }
 
