@@ -2,8 +2,6 @@ import java.io.IOException;
 import java.net.*;
 
 public class Client {
-    // CONFIGURATION
-    private static final String KNOCK_MESSAGE = "KNOCK KNOCK";
 
     // CONNECTION OBJECTS
     private static InetAddress address;

@@ -5,7 +5,6 @@ import java.util.HashSet;
 
 public class Server {
     // SERVER CONFIGURATION
-    public static final String KNOCK_MESSAGE = "KNOCK KNOCK";
     public static final Integer MIN_ACCEPTABLE_PORT = 1025;
 
     public static void main(String[] args) throws IOException, InterruptedException {
