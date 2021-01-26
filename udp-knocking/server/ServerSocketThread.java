@@ -62,6 +62,7 @@ public class ServerSocketThread extends Thread{
      */
     private void sendPortNumberToClient(InetAddress address) throws IOException {
         tcpSocket = createServerSocket();
+        new TCPListener(tcpSocket).start();
         byte [] buffer = String.valueOf(tcpSocket.getLocalPort()).getBytes();
 
         DatagramPacket request = new DatagramPacket(buffer, buffer.length, address, 50100);
