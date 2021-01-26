@@ -2,11 +2,11 @@ import java.io.IOException;
 import java.net.*;
 
 public class Client {
+    // CONFIGURATION
+    private static final int RESPONSE_PORT = 50100;
 
     // CONNECTION OBJECTS
     private static InetAddress address;
-    private static DatagramPacket packet;
-
 
     public static void main(String[] args) throws IOException, InterruptedException {
         address = InetAddress.getByName("localhost");
@@ -26,7 +26,7 @@ public class Client {
     }
 
     private static String receive() throws IOException {
-        DatagramSocket socket = new DatagramSocket(50100);
+        DatagramSocket socket = new DatagramSocket(RESPONSE_PORT);
 
         byte[] buffer = new byte[256];
         DatagramPacket request = new DatagramPacket(buffer, buffer.length);
@@ -35,20 +35,9 @@ public class Client {
     }
 
     public static void knockOnPort(int port) throws IOException {
-        InetAddress address = InetAddress.getByName("localhost");
         DatagramSocket socket = new DatagramSocket();
-
         byte[] buffer = new byte[256];
-
         DatagramPacket request = new DatagramPacket(buffer, buffer.length, address, port);
         socket.send(request);
-    }
-
-    public static int waitForPortNumber() throws IOException, NumberFormatException {
-        byte [] buffer = new byte[5];
-        packet = new DatagramPacket(buffer, buffer.length);
-        String received = new String(packet.getData(), 0, packet.getLength());
-
-        return Integer.parseInt(received);
     }
 }
