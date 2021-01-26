@@ -6,12 +6,11 @@ public class Client {
     private static final String KNOCK_MESSAGE = "KNOCK KNOCK";
 
     // CONNECTION OBJECTS
-    private static DatagramSocket socket;
     private static InetAddress address;
+    private static DatagramPacket packet;
 
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        socket = new DatagramSocket();
         address = InetAddress.getByName("localhost");
 
         knockOnPort(20202);
@@ -22,23 +21,34 @@ public class Client {
         Thread.sleep(100);
         knockOnPort(50002);
 
+        String response = receive();
+
+        System.out.println("Authorized successfully. Received TCP port number: " + response);
+
+    }
+
+    private static String receive() throws IOException {
+        DatagramSocket socket = new DatagramSocket(50100);
+
+        byte[] buffer = new byte[256];
+        DatagramPacket request = new DatagramPacket(buffer, buffer.length);
+        socket.receive(request);
+        return new String(request.getData());
     }
 
     public static void knockOnPort(int port) throws IOException {
-        byte[] buffer = KNOCK_MESSAGE.getBytes();
+        InetAddress address = InetAddress.getByName("localhost");
+        DatagramSocket socket = new DatagramSocket();
 
-        // create and send packet
-        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
-        socket.send(packet);
+        byte[] buffer = new byte[256];
 
-
+        DatagramPacket request = new DatagramPacket(buffer, buffer.length, address, port);
+        socket.send(request);
     }
 
     public static int waitForPortNumber() throws IOException, NumberFormatException {
-        byte[] buffer = new byte[256];
-
-        DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-        socket.receive(packet);
+        byte [] buffer = new byte[5];
+        packet = new DatagramPacket(buffer, buffer.length);
         String received = new String(packet.getData(), 0, packet.getLength());
 
         return Integer.parseInt(received);

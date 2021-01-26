@@ -14,6 +14,7 @@ public class ServerSocketThread extends Thread{
         this.running = true;
     }
 
+    @SuppressWarnings("BusyWait")
     @Override
     public void run() {
         try {
@@ -30,33 +31,35 @@ public class ServerSocketThread extends Thread{
                 String clientAddress =  address.getHostAddress();
                 int knockPort = packet.getPort();
 
-                // obtain received message
-                String received = new String(packet.getData(), 0, Server.KNOCK_MESSAGE.length());
+                // if message content is equal to preset knock message
+                log("knock received from: " + clientAddress + " on port " + knockPort + ". Adding to knock sequence.");
+                SequenceSupervisor.addSequence(clientAddress,knockPort);
 
-
-                if(received.equals(Server.KNOCK_MESSAGE)) {     // if message content is equal to preset knock message
-                    log("knock-knock message received from: " + clientAddress + " on port " + knockPort + ". Adding to knock sequence.");
-                    SequenceSupervisor.addSequence(clientAddress,knockPort);
-
-                    if(SequenceSupervisor.verifySequence(clientAddress)){
-                        log("client " + address + " just sent a correct sequence!");
-                        sendPortNumber();
-                    }
-                    else {
-                        log("client " + address + " sequence so far: " + SequenceSupervisor.getClientSequence(clientAddress));
-                    }
+                if(SequenceSupervisor.verifySequence(clientAddress)){
+                    log("client " + address + " just sent a correct sequence!");
+                    Thread.sleep(100);
+                    sendPortNumber(address);
                 }
+                else {
+                    log("client " + address + " sequence so far: " + SequenceSupervisor.getClientSequence(clientAddress));
+                }
+
             }
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * Sends TCP port number to a client who authorized successfully.
+     * Creates and sends the message with TCP port number to a client who authorized successfully.
+     * TCP port included in the message will be used for further communication with authorized client
      */
-    private void sendPortNumber() {
+    private void sendPortNumber(InetAddress address) throws IOException {
         tcpSocket = createServerSocket();
+        byte [] buffer = String.valueOf(tcpSocket.getLocalPort()).getBytes();
+
+        DatagramPacket request = new DatagramPacket(buffer, buffer.length, address, 50100);
+        datagramSocket.send(request);
     }
 
     private ServerSocket createServerSocket() {
