@@ -19,9 +19,9 @@ public class Client {
         Thread.sleep(100);
         knockOnPort(50002);
 
-        String response = receive();
+        int portNumber = Integer.parseInt(receive().trim());
 
-        System.out.println("Authorized successfully. Received TCP port number: " + response);
+        System.out.println("Authorized successfully. Received TCP port number: " + portNumber);
 
     }
 
