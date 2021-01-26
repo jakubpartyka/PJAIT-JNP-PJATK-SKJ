@@ -1,3 +1,7 @@
+package server;
+
+import server.SequenceSupervisor;
+
 import java.io.IOException;
 import java.net.*;
 import java.util.Random;
@@ -73,6 +77,6 @@ public class ServerSocketThread extends Thread{
     }
 
     private void log(String message){
-        System.out.println("[Server Socket (" + port + ")]: " + message);
+        System.out.println("[server.Server Socket (" + port + ")]: " + message);
     }
 }
