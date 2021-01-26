@@ -33,4 +33,8 @@ public class SequenceSupervisor {
     public static ArrayList<Integer> getClientSequence(String clientAddress){
         return clientSequences.get(clientAddress);
     }
+
+    public static void resetClientSequence(String clientAddress){
+        clientSequences.remove(clientAddress);
+    }
 }

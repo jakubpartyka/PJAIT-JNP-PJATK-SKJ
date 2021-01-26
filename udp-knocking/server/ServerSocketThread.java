@@ -1,7 +1,5 @@
 package server;
 
-import server.SequenceSupervisor;
-
 import java.io.IOException;
 import java.net.*;
 import java.util.Random;
@@ -42,7 +40,7 @@ public class ServerSocketThread extends Thread{
                 if(SequenceSupervisor.verifySequence(clientAddress)){
                     log("client " + address + " just sent a correct sequence!");
                     Thread.sleep(100);
-                    sendPortNumber(address);
+                    sendPortNumberToClient(address);
                 }
                 else {
                     log("client " + address + " sequence so far: " + SequenceSupervisor.getClientSequence(clientAddress));
@@ -57,8 +55,9 @@ public class ServerSocketThread extends Thread{
     /**
      * Creates and sends the message with TCP port number to a client who authorized successfully.
      * TCP port included in the message will be used for further communication with authorized client
+     * @param address InetAddress of client that just authorized successfully
      */
-    private void sendPortNumber(InetAddress address) throws IOException {
+    private void sendPortNumberToClient(InetAddress address) throws IOException {
         tcpSocket = createServerSocket();
         byte [] buffer = String.valueOf(tcpSocket.getLocalPort()).getBytes();
 
