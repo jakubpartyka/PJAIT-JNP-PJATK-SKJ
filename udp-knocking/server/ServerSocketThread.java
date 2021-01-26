@@ -41,6 +41,9 @@ public class ServerSocketThread extends Thread{
                     log("client " + address + " just sent a correct sequence!");
                     Thread.sleep(100);
                     sendPortNumberToClient(address);
+
+                    // reset client sequences
+                    SequenceSupervisor.resetClientSequence(clientAddress);
                 }
                 else {
                     log("client " + address + " sequence so far: " + SequenceSupervisor.getClientSequence(clientAddress));

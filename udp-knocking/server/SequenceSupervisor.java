@@ -35,6 +35,11 @@ public class SequenceSupervisor {
     }
 
     public static void resetClientSequence(String clientAddress){
+        log("resetting sequence for " + clientAddress);
         clientSequences.remove(clientAddress);
+    }
+
+    private static void log(String m){
+        System.out.println("[Server Sequence Supervisor]: " + m);
     }
 }
