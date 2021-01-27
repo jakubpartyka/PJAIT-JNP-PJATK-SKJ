@@ -2,26 +2,30 @@ package client;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 
 public class Client {
     // CONFIGURATION
     private static final int RESPONSE_PORT = 50100;
     private static final int TIMEOUT = 2000;            // server response timeout in milliseconds
-    private static String message = "Ala ma kota";
-
-    // CONNECTION OBJECTS
+    private static final String message = "Ala ma kota";    // this is the message that will be sent to server
+    private static final ArrayList<Integer> portSequence = new ArrayList<>();   // knocking sequence will be stored here
     private static InetAddress SERVER_ADDRESS;
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        SERVER_ADDRESS = InetAddress.getByName("localhost");
+        // get server address from args array
+        SERVER_ADDRESS = InetAddress.getByName(args[0]);
 
-        knockOnPort(20202);
-        Thread.sleep(100);
-        knockOnPort(20203);
-        Thread.sleep(100);
-        knockOnPort(40500);
-        Thread.sleep(100);
-        knockOnPort(50002);
+        // get port sequence from args array
+        for (int i = 1; i < args.length; i++) {
+            int port = Integer.parseInt(args[i]);
+            portSequence.add(port);
+        }
+
+        // knock on ports
+        for (Integer port : portSequence) {
+            knockOnPort(port);
+        }
 
         try {
             int portNumber = Integer.parseInt(receive().trim());
@@ -36,10 +40,10 @@ public class Client {
     }
 
     private static String receive() throws IOException {
-        System.out.println("waiting for server response");
-
         DatagramSocket socket = new DatagramSocket(RESPONSE_PORT);
         socket.setSoTimeout(TIMEOUT);                               //set socket timeout
+
+        System.out.println("waiting for server response");
 
         byte[] buffer = new byte[256];
         DatagramPacket request = new DatagramPacket(buffer, buffer.length);
