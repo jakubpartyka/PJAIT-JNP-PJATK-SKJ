@@ -39,7 +39,7 @@ public class ServerSocketThread extends Thread{
 
                 if(SequenceSupervisor.verifySequence(clientAddress)){
                     log("client " + address + " just sent a correct sequence!");
-                    Thread.sleep(100);
+                    Thread.sleep(300);                  // give client some time to start socket
                     sendPortNumberToClient(address);
 
                     // reset client sequences
