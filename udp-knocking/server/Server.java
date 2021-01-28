@@ -18,7 +18,7 @@ public class Server {
 
         // check if any args were passed
         if(args.length == 0){
-            System.out.println("Please provide UPD knocking sequence as program arguments");
+            log("Please provide UPD knocking sequence as program arguments");
             System.exit(1);
         }
 
@@ -39,7 +39,7 @@ public class Server {
 
         // START EACH SOCKET IN NEW THREAD
         for (Integer portNumber : ports) {
-            System.out.println("Starting socket on port " + portNumber);
+            log("Starting socket on port " + portNumber);
             ServerSocketThread socketThread = new ServerSocketThread(portNumber);
             socketThread.start();
             sockets.add(socketThread);
@@ -49,7 +49,11 @@ public class Server {
 
         //todo check if threads started correctly
 
-        System.out.println("All sockets stared. Correct UPD knock sequence:\n" +
+        log("All sockets stared. Correct UPD knock sequence:\n" +
                 Arrays.toString(SequenceSupervisor.sequence));
+    }
+
+    private static void log (String m){
+        System.out.println("[SERVER]: " + m);
     }
 }

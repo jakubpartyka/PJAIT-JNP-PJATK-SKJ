@@ -12,7 +12,7 @@ public class Client {
     private static final ArrayList<Integer> portSequence = new ArrayList<>();   // knocking sequence will be stored here
     private static InetAddress SERVER_ADDRESS;
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException {
         // get server address from args array
         SERVER_ADDRESS = InetAddress.getByName(args[0]);
 
@@ -29,13 +29,13 @@ public class Client {
 
         try {
             int portNumber = Integer.parseInt(receive().trim());
-            System.out.println("Authorized successfully. Received TCP port number: " + portNumber);
+            log("Authorized successfully. Received TCP port number: " + portNumber);
 
             // connect to server over TCP
             String response = reverseStringOverTcp(portNumber);
-            System.out.println("received server response: " + response);
+            log("received server response: " + response);
         } catch (SocketTimeoutException e){
-            System.out.println("Connection timed out, server did not respond. ");
+            log("Connection timed out, server did not respond. ");
         }
     }
 
@@ -43,7 +43,7 @@ public class Client {
         DatagramSocket socket = new DatagramSocket(RESPONSE_PORT);
         socket.setSoTimeout(TIMEOUT);                               //set socket timeout
 
-        System.out.println("waiting for server response");
+        log("waiting for server response");
 
         byte[] buffer = new byte[256];
         DatagramPacket request = new DatagramPacket(buffer, buffer.length);
@@ -52,6 +52,7 @@ public class Client {
     }
 
     public static void knockOnPort(int port) throws IOException {
+        log("Knocking on port " + port);
         DatagramSocket socket = new DatagramSocket();
         byte[] buffer = new byte[256];
         DatagramPacket request = new DatagramPacket(buffer, buffer.length, SERVER_ADDRESS, port);
@@ -69,5 +70,9 @@ public class Client {
 
         // receive
         return reader.readLine();
+    }
+    
+    private static void log(String m){
+        System.out.println("[CLIENT]: " + m);
     }
 }
