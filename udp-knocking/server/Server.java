@@ -36,6 +36,8 @@ public class Server {
             ports.add(Integer.parseInt(arg));
         }
 
+        //start reset thread
+        SequenceSupervisor.startSequenceResetThread();
 
         // START EACH SOCKET IN NEW THREAD
         for (Integer portNumber : ports) {
