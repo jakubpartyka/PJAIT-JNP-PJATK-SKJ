@@ -1,18 +1,25 @@
 package client;
 
+import javax.xml.crypto.Data;
+import javax.xml.xpath.XPathFunctionResolver;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 
 public class Client {
     // CONFIGURATION
-    private static final int RESPONSE_PORT = 50100;
+    private static final int RESPONSE_PORT = 60000;
     private static final int TIMEOUT = 2000;            // server response timeout in milliseconds
     private static final String message = "Ala ma kota";    // this is the message that will be sent to server
     private static final ArrayList<Integer> portSequence = new ArrayList<>();   // knocking sequence will be stored here
     private static InetAddress SERVER_ADDRESS;
 
-    public static void main(String[] args) throws IOException {
+    private static DatagramSocket socket;
+
+    public static void main(String[] args) throws IOException, InterruptedException {
+        // start socket
+        socket = new DatagramSocket();
+
         // get server address from args array
         SERVER_ADDRESS = InetAddress.getByName(args[0]);
 
@@ -25,6 +32,7 @@ public class Client {
         // knock on ports
         for (Integer port : portSequence) {
             knockOnPort(port);
+            Thread.sleep(300);
         }
 
         try {
@@ -53,11 +61,11 @@ public class Client {
 
     public static void knockOnPort(int port) throws IOException {
         log("Knocking on port " + port);
-        DatagramSocket socket = new DatagramSocket();
         byte[] buffer = new byte[256];
         DatagramPacket request = new DatagramPacket(buffer, buffer.length, SERVER_ADDRESS, port);
         socket.send(request);
     }
+
 
     public static String reverseStringOverTcp(int port) throws IOException {
         // connect to server
