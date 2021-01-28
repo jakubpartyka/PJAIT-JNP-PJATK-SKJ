@@ -45,9 +45,13 @@ public class Server {
             sockets.add(socketThread);
         }
 
-        Thread.sleep(1000);
-
-        //todo check if threads started correctly
+        //wait for all sockets to start
+        boolean started = false;
+        while (!started) {
+            for (ServerSocketThread socketThread : sockets) {
+                started = socketThread.isAlive();
+            }
+        }
 
         log("All sockets stared. Correct UPD knock sequence:\n" +
                 Arrays.toString(SequenceSupervisor.sequence));
