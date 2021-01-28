@@ -31,8 +31,6 @@ public class TestServer extends Thread {
             } catch (Exception e){
                 e.printStackTrace();
             }
-
-
         });
 
 

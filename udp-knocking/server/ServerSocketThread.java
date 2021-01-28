@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.Random;
 
 public class ServerSocketThread extends Thread{
+    private static final int CLIENT_RESPONSE_PORT = 60000;
     private final int port;
     DatagramSocket datagramSocket;
     ServerSocket tcpSocket;
@@ -39,7 +40,7 @@ public class ServerSocketThread extends Thread{
 
                 if(SequenceSupervisor.verifySequence(clientAddress)){
                     log("client " + address + " just sent a correct sequence!");
-                    Thread.sleep(300);                  // give client some time to start socket
+                    Thread.sleep(300);                  // give client some time to start his socket
                     sendPortNumberToClient(address);
 
                     // reset client sequences
@@ -48,7 +49,6 @@ public class ServerSocketThread extends Thread{
                 else {
                     log("client " + address + " sequence so far: " + SequenceSupervisor.getClientSequence(clientAddress));
                 }
-
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -65,7 +65,7 @@ public class ServerSocketThread extends Thread{
         new TCPListener(tcpSocket).start();
         byte [] buffer = String.valueOf(tcpSocket.getLocalPort()).getBytes();
 
-        DatagramPacket request = new DatagramPacket(buffer, buffer.length, address, 50100);
+        DatagramPacket request = new DatagramPacket(buffer, buffer.length, address, CLIENT_RESPONSE_PORT);
         datagramSocket.send(request);
     }
 
@@ -80,6 +80,6 @@ public class ServerSocketThread extends Thread{
     }
 
     private void log(String message){
-        System.out.println("[server.Server Socket (" + port + ")]: " + message);
+        System.out.println("[Server Socket (" + port + ")]: " + message);
     }
 }
